@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+     http://dubbo.apache.org/schema/dubbo  http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+<!-- 和本地bean一样实现服务   实例化一个服务，放入到容器当中 -->
+<bean id="studentService1" class="com.student.service.impl.StudentServiceImpl1" />
+<bean id="studentService2" class="com.student.service.impl.StudentServiceImpl2" />
+<bean id="studentService3" class="com.student.service.impl.StudentServiceImpl3" />
+
+
+<!-- 提供方应用信息，用于计算依赖关系 -->
+<dubbo:application name="student-app"  />
+
+<!-- 使用zk中心暴露服务地址 -->
+<dubbo:registry id="registerZk" address="zookeeper://192.168.95.128:2181" />
+
+ 
+<!-- 用dubbo协议在20880端口暴露服务  -->
+<dubbo:protocol name="dubbo" port="20880" />
+ 
+
+<dubbo:service interface="com.student.service.StudentService" 
+	ref="studentService1"  group="a" />
+	 
+ <dubbo:service interface="com.student.service.StudentService" 
+ 	ref="studentService2"  group="b" /> 
+
+<dubbo:service interface="com.student.service.StudentService" 
+	ref="studentService3"  group="c" /> 
+  
+ 
+
+
+</beans>
